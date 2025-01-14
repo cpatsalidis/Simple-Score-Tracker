@@ -12,72 +12,92 @@ let score2 = [0, 15, 30, 40, 'Adv'];
 let counterPlayer1 = 0;
 let counterPlayer2 = 0;
 
-let winner = false;
 let gamesWon1 = 0;
 let gamesWon2 = 0;
 let setsWon1 = 0;
 let setsWon2 = 0;
 let sets = 0;
 let deuce = false;
+let tieBreak = false;
+let tieBreakScore1 = 0;
+let tieBreakScore2 = 0;
 let noOfSetsValue = 3;
 
-// fix winner
 btn1.addEventListener('click', function () {
-    counterPlayer1++;
-    if (!deuce) {
-        if (gamesWon1 === 2 || gamesWon2 === 2) {
+    if (tieBreak) {
+        if (tieBreakScore1 > 6 && tieBreakScore1 - tieBreakScore2 > 1) {
             setsWon1++;
-            if (sets === noOfSets.value) {
-                winner = true;
-            }
             nextSet();
-        } else if (counterPlayer1 === 4) {
-            gamesWon1++;
-            resetGame();
+        } else {
+            tieBreakScore1++;
+            scorePlayer1.textContent = tieBreakScore1;
         }
 
-        if (counterPlayer1 === 3 && counterPlayer2 === 3) {
+    } else if (!deuce) {
+        counterPlayer1++;
+        if ((gamesWon1 === 6 || 7) && gamesWon1 - gamesWon2 > 1) {
+            setsWon1++;
+            nextSet();
+        } else if (gamesWon2 === 6 && gamesWon1 === 6) {
+            tieBreak = true;
+        }
+
+        if (counterPlayer1 === 4) {
+            gamesWon1++;
+            resetGame();
+        } else if (counterPlayer1 === 3 && counterPlayer2 === 3) {
             deuce = true;
         }
         scorePlayer1.textContent = score1[counterPlayer1];
 
     } else {
-        if (counterPlayer1 === 5 && counterPlayer2 === 3) {
+        counterPlayer1++;
+        if (counterPlayer1 - counterPlayer2 === 2) {
             gamesWon1++;
             deuce = false;
             resetGame();
-        } else if (counterPlayer1 === 4 && counterPlayer2 === 4) {
+        } else if (counterPlayer1 === counterPlayer2) {
             counterPlayer2--;
             counterPlayer1--;
             scorePlayer2.textContent = score1[counterPlayer2];
         }
         scorePlayer1.textContent = score2[counterPlayer1];
     }
-}
 });
 
 btn2.addEventListener('click', function () {
-    counterPlayer2++;
-    if (!deuce) {
-        if (gamesWon2 === 2 || gamesWon1 === 2) {
+    if (tieBreak) {
+        if (tieBreakScore2 > 6 && tieBreakScore2 - tieBreakScore1 > 1) {
             setsWon2++;
-            console.log(setsWon2);
             nextSet();
-        } else if (counterPlayer2 === 4) {
-            gamesWon2++;
-            resetGame();
+        } else {
+            tieBreakScore2++;
+            scorePlayer2.textContent = tieBreakScore2;
         }
 
-        if (counterPlayer1 === 3 && counterPlayer2 === 3) {
+    } else if (!deuce) {
+        counterPlayer2++;
+        if ((gamesWon2 === 6 || 7) && gamesWon2 - gamesWon1 > 1) {
+            setsWon2++;
+            nextSet();
+        } else if (gamesWon1 === 6 && gamesWon2 === 6) {
+            tieBreak = true;
+        }
+
+        if (counterPlayer2 === 4) {
+            gamesWon2++;
+            resetGame();
+        } else if (counterPlayer2 === 3 && counterPlayer1 === 3) {
             deuce = true;
         }
         scorePlayer2.textContent = score2[counterPlayer2];
     } else {
-        if (counterPlayer2 === 5 && counterPlayer1 === 3) {
+        counterPlayer2++;
+        if (counterPlayer2 - counterPlayer1 === 2) {
             gamesWon2++;
             deuce = false;
             resetGame();
-        } else if (counterPlayer2 === 4 && counterPlayer1 === 4) {
+        } else if (counterPlayer2 === counterPlayer1) {
             counterPlayer1--;
             counterPlayer2--;
             scorePlayer1.textContent = score1[counterPlayer1];
@@ -94,12 +114,6 @@ noOfSets.addEventListener('change', function () {
 });
 
 function resetGame() {
-    if (setsWon2 === Math.ceil(noOfSetsValue / 2)) {
-        alert('Player 2 wins');
-    } else if (setsWon1 === Math.ceil(noOfSetsValue / 2)) {
-        alert('Player 1 wins');
-    }
-
     counterPlayer1 = 0;
     counterPlayer2 = 0;
     scorePlayer1.textContent = 0;
@@ -110,10 +124,13 @@ function resetGame() {
 
 function nextSet() {
     sets++;
+    tieBreak = false;
     gamesWon1 = 0;
     gamesWon2 = 0;
     counterPlayer1 = 0;
     counterPlayer2 = 0;
+    tieBreakScore1 = 0;
+    tieBreakScore2 = 0;
 
     const space1 = document.createElement('span');
     space1.textContent = ' ';
@@ -146,6 +163,8 @@ btnReset.addEventListener('click', resetAll);
 function resetAll() {
     counterPlayer1 = 0;
     counterPlayer2 = 0;
+    tieBreakScore1 = 0;
+    tieBreakScore2 = 0;
     scorePlayer1.textContent = 0;
     scorePlayer2.textContent = 0;
     gamesWon1 = 0;
@@ -154,7 +173,7 @@ function resetAll() {
     setsWon2 = 0;
     sets = 0;
     deuce = false;
-    winner = false;
+    tieBreak = false;
 
     gamesPlayer1 = document.querySelector('#gamesPlayer1');
     gamesPlayer2 = document.querySelector('#gamesPlayer2');

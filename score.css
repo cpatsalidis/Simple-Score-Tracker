@@ -91,9 +91,10 @@ button:active {
 }
 
 label {
-    display: block;
+    display: inline-block;
     font-size: 1rem;
     margin-bottom: 5px;
+    margin-right: 10px;
     color: #333;
     font-weight: bold;
 }
@@ -131,5 +132,5 @@ select:focus {
 option {
     padding: 10px;
     background-color: #fff;
-    color: #333;
+    color: #096ddf;
 }
