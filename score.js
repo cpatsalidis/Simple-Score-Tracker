@@ -25,22 +25,19 @@ let noOfSetsValue = 3;
 
 btn1.addEventListener('click', function () {
     if (tieBreak) {
+        tieBreakScore1++;
+
         if (tieBreakScore1 > 6 && tieBreakScore1 - tieBreakScore2 > 1) {
+            gamesWon1++;
             setsWon1++;
+            resetGame();
+            tieBreakPointDisplay();
             nextSet();
-        } else {
-            tieBreakScore1++;
-            scorePlayer1.textContent = tieBreakScore1;
         }
+        scorePlayer1.textContent = tieBreakScore1;
 
     } else if (!deuce) {
         counterPlayer1++;
-        if ((gamesWon1 === 6 || 7) && gamesWon1 - gamesWon2 > 1) {
-            setsWon1++;
-            nextSet();
-        } else if (gamesWon2 === 6 && gamesWon1 === 6) {
-            tieBreak = true;
-        }
 
         if (counterPlayer1 === 4) {
             gamesWon1++;
@@ -48,14 +45,29 @@ btn1.addEventListener('click', function () {
         } else if (counterPlayer1 === 3 && counterPlayer2 === 3) {
             deuce = true;
         }
+
+        if ((gamesWon1 > 5) && gamesWon1 - gamesWon2 > 1) {
+            setsWon1++;
+            resetGame();
+            nextSet();
+        } else if (gamesWon2 === 6 && gamesWon1 === 6) {
+            tieBreak = true;
+            return btn1.click();
+        }
         scorePlayer1.textContent = score1[counterPlayer1];
 
     } else {
         counterPlayer1++;
+
         if (counterPlayer1 - counterPlayer2 === 2) {
             gamesWon1++;
             deuce = false;
             resetGame();
+
+            if (gamesWon1 > 5 && gamesWon1 - gamesWon2 > 1) {
+                setsWon1++;
+                nextSet();
+            }
         } else if (counterPlayer1 === counterPlayer2) {
             counterPlayer2--;
             counterPlayer1--;
@@ -67,22 +79,20 @@ btn1.addEventListener('click', function () {
 
 btn2.addEventListener('click', function () {
     if (tieBreak) {
+        tieBreakScore2++;
+
         if (tieBreakScore2 > 6 && tieBreakScore2 - tieBreakScore1 > 1) {
+            gamesWon2++;
             setsWon2++;
+            resetGame();
+            tieBreakPointDisplay();
             nextSet();
-        } else {
-            tieBreakScore2++;
-            scorePlayer2.textContent = tieBreakScore2;
         }
+        scorePlayer2.textContent = tieBreakScore2;
+
 
     } else if (!deuce) {
         counterPlayer2++;
-        if ((gamesWon2 === 6 || 7) && gamesWon2 - gamesWon1 > 1) {
-            setsWon2++;
-            nextSet();
-        } else if (gamesWon1 === 6 && gamesWon2 === 6) {
-            tieBreak = true;
-        }
 
         if (counterPlayer2 === 4) {
             gamesWon2++;
@@ -90,13 +100,28 @@ btn2.addEventListener('click', function () {
         } else if (counterPlayer2 === 3 && counterPlayer1 === 3) {
             deuce = true;
         }
+
+        if ((gamesWon2 > 5) && gamesWon2 - gamesWon1 > 1) {
+            setsWon2++;
+            resetGame();
+            nextSet();
+        } else if (gamesWon1 === 6 && gamesWon2 === 6) {
+            tieBreak = true;
+            return btn2.click();
+        }
         scorePlayer2.textContent = score2[counterPlayer2];
     } else {
         counterPlayer2++;
+
         if (counterPlayer2 - counterPlayer1 === 2) {
             gamesWon2++;
             deuce = false;
             resetGame();
+
+            if (gamesWon2 > 5 && gamesWon2 - gamesWon1 > 1) {
+                setsWon2++;
+                nextSet();
+            }
         } else if (counterPlayer2 === counterPlayer1) {
             counterPlayer1--;
             counterPlayer2--;
@@ -104,14 +129,31 @@ btn2.addEventListener('click', function () {
         }
         scorePlayer2.textContent = score2[counterPlayer2];
     }
-
-
 });
 
 noOfSets.addEventListener('change', function () {
     noOfSetsValue = noOfSets.value;
     resetAll();
 });
+
+function checkWinner() {
+    if (setsWon1 === Math.ceil(noOfSetsValue / 2)) {
+        alert('Player 1 wins the match');
+        resetAll();
+    } else if (setsWon2 === Math.ceil(noOfSetsValue / 2)) {
+        alert('Player 2 wins the match');
+        resetAll();
+    }
+}
+
+function tieBreakPointDisplay() {
+    superscript1 = document.createElement('sup');
+    superscript2 = document.createElement('sup');
+    superscript1.textContent = tieBreakScore1;
+    superscript2.textContent = tieBreakScore2;
+    gamesPlayer1.append(superscript1);
+    gamesPlayer2.append(superscript2);
+}
 
 function resetGame() {
     counterPlayer1 = 0;
@@ -133,10 +175,10 @@ function nextSet() {
     tieBreakScore2 = 0;
 
     const space1 = document.createElement('span');
-    space1.textContent = ' ';
-    space1.classList.add('extra-span');
     const space2 = document.createElement('span');
+    space1.textContent = ' ';
     space2.textContent = ' ';
+    space1.classList.add('extra-span');
     space2.classList.add('extra-span');
 
     gamesPlayer1.insertAdjacentElement('afterend', space1);
@@ -156,6 +198,8 @@ function nextSet() {
 
     gamesPlayer1 = document.querySelector(`#${newSet1.id}`);
     gamesPlayer2 = document.querySelector(`#${newSet2.id}`);
+
+    checkWinner();
 }
 
 btnReset.addEventListener('click', resetAll);
