@@ -1,0 +1,23 @@
+{
+  "name": "simple-score-tracker",
+  "version": "1.0.0",
+  "description": "This project is a simple web-based point tracker for keeping score in a tennis match. The interface allows users to add or subtract points for each player and displays the current score according to tennis scoring rules.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cpatsalidis/Simple-Score-Tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cpatsalidis/Simple-Score-Tracker/issues"
+  },
+  "homepage": "https://github.com/cpatsalidis/Simple-Score-Tracker#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  }
+}
