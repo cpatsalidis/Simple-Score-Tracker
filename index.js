@@ -16,6 +16,11 @@ app.get('/score', (req, res) => {
     res.render('score');
 })
 
+app.get('/counter', (req, res) => {
+    res.render('counter');
+})
+
+
 app.get('*', (req, res) => {
     res.send(`Not found`);
 })
