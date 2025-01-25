@@ -216,7 +216,7 @@ function nextSet() {
 
     space1.insertAdjacentElement('afterend', newSet1);
     space2.insertAdjacentElement('afterend', newSet2);
-    
+
 
     gamesPlayer1 = document.querySelector(`#${newSet1.id}`);
     gamesPlayer2 = document.querySelector(`#${newSet2.id}`);
